@@ -1,0 +1,17 @@
+# Пример переменных для применения скелета. Скопировать в terraform.tfvars и заполнить.
+# terraform.tfvars в .gitignore - секреты не коммитим.
+
+yc_token       = "<IAM_или_OAuth_токен>"
+yc_cloud_id    = "<cloud_id>"
+yc_folder_id   = "<folder_id>"
+yc_zone        = "ru-central1-a"
+
+vm_cores       = 4
+vm_memory_gb   = 8
+vm_disk_gb     = 40
+
+ssh_public_key = "ssh-ed25519 AAAA... user@host"
+repo_url       = "https://github.com/<owner>/<repo>.git"
+
+# Для устной защиты сузить до своего IP, например ["203.0.113.4/32"].
+ssh_allowed_cidr = ["0.0.0.0/0"]

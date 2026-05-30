@@ -18,10 +18,12 @@ COPY serving/requirements.txt /app/serving/requirements.txt
 RUN pip install --no-cache-dir -r /app/serving/requirements.txt
 
 # Код: ядро признаков, шаги промоута (для отката) и сам сервинг + Feast-репозиторий.
+# scripts нужен для bootstrap-модели (тот же образ запускает scripts/bootstrap_model.py).
 COPY src/uneemi_ml /app/src/uneemi_ml
 COPY training /app/training
 COPY serving /app/serving
 COPY feature_repo /app/feature_repo
+COPY scripts/bootstrap_model.py /app/scripts/bootstrap_model.py
 
 EXPOSE 8000
 

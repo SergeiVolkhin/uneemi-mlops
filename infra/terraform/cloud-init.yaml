@@ -1,0 +1,17 @@
+#cloud-config
+# Подготовка VM: Docker + клон репозитория + подъём стека.
+# Замечание: ONNX SigLIP (~370MB) на VM либо экспортируется отдельно (uv + torch),
+# либо кладётся в объектное хранилище и тянется при провижининге - для скелета
+# оставлено как шаг ручной донастройки (см. infra/terraform/README.md).
+package_update: true
+packages:
+  - git
+  - ca-certificates
+  - curl
+
+runcmd:
+  - curl -fsSL https://get.docker.com | sh
+  - usermod -aG docker ubuntu
+  - git clone ${repo_url} /opt/uneemi
+  - cp /opt/uneemi/infra/.env.example /opt/uneemi/infra/.env
+  - cd /opt/uneemi/infra && docker compose --env-file .env -f docker-compose.yml up -d

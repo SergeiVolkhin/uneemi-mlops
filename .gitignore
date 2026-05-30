@@ -43,6 +43,10 @@ monitoring/reports/
 # Демо-данные пайплайна (картинки банка, сгенерированные пары)
 data/images/
 data/pairs/
+data/raw/
+
+# Рантайм-каталоги стека (логи Airflow, промежуточные артефакты прогонов)
+.runtime/
 
 # Terraform состояние и приватные tfvars
 infra/terraform/.terraform/
