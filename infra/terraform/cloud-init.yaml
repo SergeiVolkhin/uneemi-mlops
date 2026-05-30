@@ -10,8 +10,13 @@ packages:
   - curl
 
 runcmd:
+  # Docker ставим с официального скрипта (для прода лучше пинить версию/проверять SHA).
   - curl -fsSL https://get.docker.com | sh
   - usermod -aG docker ubuntu
-  - git clone ${repo_url} /opt/uneemi
-  - cp /opt/uneemi/infra/.env.example /opt/uneemi/infra/.env
+  # Клон пинуется на конкретный ref (не плавающий main).
+  - git clone --depth 1 --branch ${repo_ref} ${repo_url} /opt/uneemi
+  # БЕЗОПАСНОСТЬ: .env с реальными секретами оператор подкладывает сам (секрет-стор,
+  # terraform file-provisioner, ручной scp). НЕ копируем .env.example - в нём дефолтные
+  # учётки. Fail-closed: без реального .env стек не поднимаем.
+  - test -f /opt/uneemi/infra/.env || (echo "ОШИБКА: /opt/uneemi/infra/.env не предоставлен (см. infra/terraform/README.md)"; exit 1)
   - cd /opt/uneemi/infra && docker compose --env-file .env -f docker-compose.yml up -d

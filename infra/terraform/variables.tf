@@ -48,10 +48,17 @@ variable "repo_url" {
   type        = string
 }
 
+variable "repo_ref" {
+  description = "Ref (тег/ветка) для клонирования - пинуем, не плавающий main"
+  type        = string
+  default     = "main"
+}
+
 variable "ssh_allowed_cidr" {
-  description = "Откуда разрешён доступ (для защиты сузить до своего IP)"
+  description = "Откуда разрешён доступ (БЕЗ дефолта - оператор обязан задать свой IP/CIDR, fail-safe)"
   type        = list(string)
-  default     = ["0.0.0.0/0"]
+  # Намеренно без default: пустой/незаданный список не откроет порты в мир.
+  # Для защиты задать в terraform.tfvars свой адрес, например ["203.0.113.4/32"].
 }
 
 variable "allowed_ports" {

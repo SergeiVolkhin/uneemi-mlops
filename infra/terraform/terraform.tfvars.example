@@ -12,6 +12,7 @@ vm_disk_gb     = 40
 
 ssh_public_key = "ssh-ed25519 AAAA... user@host"
 repo_url       = "https://github.com/<owner>/<repo>.git"
+repo_ref       = "main"
 
-# Для устной защиты сузить до своего IP, например ["203.0.113.4/32"].
-ssh_allowed_cidr = ["0.0.0.0/0"]
+# ОБЯЗАТЕЛЬНО задать (дефолта нет, fail-safe). Сузить до своего IP/CIDR, например:
+ssh_allowed_cidr = ["203.0.113.4/32"]

@@ -86,6 +86,7 @@ resource "yandex_compute_instance" "uneemi" {
   metadata = {
     user-data = templatefile("${path.module}/cloud-init.yaml", {
       repo_url       = var.repo_url
+      repo_ref       = var.repo_ref
       ssh_public_key = var.ssh_public_key
     })
     ssh-keys = "ubuntu:${var.ssh_public_key}"
