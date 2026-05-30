@@ -32,6 +32,7 @@ x-airflow-common: &airflow-common
     - ../.runtime/airflow_runs:/opt/airflow/runs
     - ../.runtime/monitoring_reports:/opt/airflow/monitoring_reports
   user: "${AIRFLOW_UID}:0"
+  networks: [uneemi_net]
 
 services:
   # --- C7 backend + метаданные: Postgres (общий для Airflow и MLflow) --------
