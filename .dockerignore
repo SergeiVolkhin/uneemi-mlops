@@ -1,0 +1,29 @@
+# Контекст сборки = корень репо (build context: ..). Исключаем тяжёлое и лишнее,
+# чтобы образы собирались быстро и воспроизводимо.
+.git
+.gitignore
+.gitattributes
+.venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.ruff_cache
+*.egg-info
+
+# ML-артефакты не кладём в образы (монтируются томами / тянутся в рантайме)
+models/
+data/
+mlruns/
+mlartifacts/
+feature_repo/data/
+monitoring/reports/
+
+# Документация и IaC не нужны в рантайм-образах
+docs/
+infra/terraform/
+*.md
+.github/
+
+# IDE
+.idea/
+.vscode/
