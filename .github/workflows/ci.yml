@@ -1,0 +1,44 @@
+# CI/CD (C1): линт, тесты и сборка образов. Без публикации - только проверка.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Линт (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Установить зависимости
+        run: uv sync --frozen || uv sync
+      - name: ruff check
+        run: uv run ruff check .
+
+  test:
+    name: Тесты (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Установить зависимости
+        run: uv sync --frozen || uv sync
+      - name: Доп. зависимости для тестов тренировочного ядра
+        run: uv pip install scikit-learn==1.5.2 pandas==2.2.3 pyarrow==17.0.0
+      - name: pytest
+        # Тесты ядра skip без ONNX-файла; контракт признаков и тренировка - зелёные.
+        run: uv run pytest -q
+
+  build-images:
+    name: Сборка docker-образов
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Подготовить .env
+        run: cp infra/.env.example infra/.env
+      - name: Сборка образов стека (валидация Dockerfile-ов)
+        run: docker compose --env-file infra/.env -f infra/docker-compose.yml build mlflow serving airflow-webserver
