@@ -1,0 +1,18 @@
+# Конфигурация Feast (C4 фича-стор).
+# project - пространство имён реестра.
+# provider local - без облачного оркестратора, материализация локальными средствами.
+# registry - файл реестра на общем томе (его пишет feature_pipeline, читают
+#   training_pipeline и serving). Путь относительный - от каталога этого файла.
+# online_store redis - low-latency выдача признаков на матч-инференсе.
+#   Адрес redis:6379 - DNS-имя сервиса внутри docker-сети (НЕ localhost).
+# offline_store file - паркеты для исторических выборок (get_historical_features).
+#   Для облака переключается на s3 (MinIO/S3) без изменения определений фич - см. README.
+project: uneemi
+provider: local
+registry: data/registry.db
+online_store:
+  type: redis
+  connection_string: redis:6379
+offline_store:
+  type: file
+entity_key_serialization_version: 2

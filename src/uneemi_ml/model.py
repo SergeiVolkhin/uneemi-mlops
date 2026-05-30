@@ -6,7 +6,6 @@ import logging
 from pathlib import Path
 
 import numpy as np
-import onnxruntime as ort
 from PIL import Image
 
 from uneemi_ml.config import EMBED_DIM, ONNX_VISION_PATH, ORT_INTRA_OP_THREADS
@@ -27,6 +26,11 @@ class Siglip2Encoder:
         onnx_path: Path | None = None,
         intra_op_threads: int | None = None,
     ) -> None:
+        # Ленивый импорт onnxruntime: тяжёлый рантайм инференса нужен только при
+        # создании сессии. Так лёгкие потребители контракта признаков
+        # (uneemi_ml.features, serving на sklearn) импортируют пакет без onnxruntime.
+        import onnxruntime as ort
+
         path = Path(onnx_path) if onnx_path is not None else ONNX_VISION_PATH
         if not path.exists():
             raise FileNotFoundError(
