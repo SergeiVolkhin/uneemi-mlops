@@ -1,0 +1,15 @@
+# Зависимости сервинга. Пины согласованы: numpy<2 - общий знаменатель для
+# feast 0.40 / scikit-learn 1.5 / mlflow 2.22 / pandas 2.2 (без torch/onnxruntime).
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+mlflow==2.22.1
+scikit-learn==1.5.2
+pandas==2.2.3
+pyarrow==17.0.0
+numpy==1.26.4
+boto3==1.35.99
+prometheus-client==0.21.1
+feast[redis]==0.40.1
+psutil==7.0.0
+pillow==11.1.0
