@@ -67,14 +67,14 @@
 
 | Фактор | Ожидаемый эффект | Проверено? |
 |---|---|---|
-| Resolution: paper @256 vs ours @224 | −1…−2 п.п. | нет (требует отдельного экспорта `siglip2-base-patch16-256`) |
+| Resolution: paper @256 vs ours @224 | -1…-2 п.п. | нет (требует отдельного экспорта `siglip2-base-patch16-256`) |
 | Classnames: Keras vs OpenAI curated | +0.66 п.п. фактически наблюдалось | да (Keras 69.36 → OpenAI 70.02 на N=5000) |
 | Multilingual tokenizer vs SigLIP1 English-only | мог снизить confidence на узких prompt-ах | косвенно (токенизация бит-в-бит с AutoProcessor; ничего своего не добавлено) |
-| Subset size N=5000 vs paper full val N=50000 | ±1 п.п. (95% CI) | стат. ошибка не объясняет −9 п.п. |
+| Subset size N=5000 vs paper full val N=50000 | ±1 п.п. (95% CI) | стат. ошибка не объясняет -9 п.п. |
 
 **Итог:** наш ONNX-pipeline валиден. Реальный top-1 на нашей конфигурации
 (fp32, B/16@224, 5k stratified val, OpenAI classnames, 80 templates) - **70.02%**.
-Это **−9 п.п. от paper-числа 79.1%** @ B/16@256, **−7 п.п.** от ожидаемого 78% @ B/16@224 (paper minus −1 за разрешение).
+Это **-9 п.п. от paper-числа 79.1%** @ B/16@256, **-7 п.п.** от ожидаемого 78% @ B/16@224 (paper minus -1 за разрешение).
 Остаточный разрыв вероятнее всего связан с (а) более высоким resolution в paper-evaluation,
 (б) разницей в evaluation script между Google internal и open_clip/HF.
 
@@ -99,10 +99,10 @@
 
 | Resolution | Backend | top-1 | top-5 | Δ от paper 79.1% |
 |---|---|---|---|---|
-| @224 | наш ONNX (PyTorch parity 7.6e-06) | 70.02% | 86.32% | −9.08 |
+| @224 | наш ONNX (PyTorch parity 7.6e-06) | 70.02% | 86.32% | -9.08 |
 | @256 | HF PyTorch reference | 70.90% | 86.46% | -8.20 |
 
-**Δ resolution effect (@256 − @224):** +0.88 п.п.
+**Δ resolution effect (@256 - @224):** +0.88 п.п.
 
 **Вывод:** resolution **не объясняет** gap. @256 даёт 70.90%, что недостаточно для воспроизведения paper 79.1%. Нужно дальнейшее расследование: evaluation script, dataset variant, версия модели.
 
@@ -134,12 +134,12 @@
 
 | # | Configuration | top-1 | Δ от paper 79.1% | Status |
 |---|---|---:|---:|---|
-| 1 | Keras classnames + AutoTokenizer | 69.36% | −9.74 | ❌ |
-| 2 | OpenAI classnames + AutoTokenizer | 70.02% | −9.08 | ❌ |
-| 3 | @256 PyTorch reference + AutoTokenizer | 70.90% | −8.20 | ❌ |
-| 4 | **OpenAI + `Siglip2Tokenizer` + remove punctuation** | **78.48%** | **−0.62** | **✅ PASS + PARITY** |
+| 1 | Keras classnames + AutoTokenizer | 69.36% | -9.74 | FAIL |
+| 2 | OpenAI classnames + AutoTokenizer | 70.02% | -9.08 | FAIL |
+| 3 | @256 PyTorch reference + AutoTokenizer | 70.90% | -8.20 | FAIL |
+| 4 | **OpenAI + `Siglip2Tokenizer` + remove punctuation** | **78.48%** | **-0.62** | **PASS + PARITY** |
 
-**Прирост от итерации 3 к 4: +7.58 п.п.** Полученные 78.48% попадают точно в parity-окно [76.7, 78.7] и отличаются от paper всего на **−0.62 п.п.** - это в пределах статистической ошибки (N=5000, 95% CI ≈ ±1 п.п.) и resolution-delta (paper @256 vs наш @224, видели +0.88 п.п. effect в Resolution check).
+**Прирост от итерации 3 к 4: +7.58 п.п.** Полученные 78.48% попадают точно в parity-окно [76.7, 78.7] и отличаются от paper всего на **-0.62 п.п.** - это в пределах статистической ошибки (N=5000, 95% CI ≈ ±1 п.п.) и resolution-delta (paper @256 vs наш @224, видели +0.88 п.п. effect в Resolution check).
 
 ### Что было не так
 
@@ -167,7 +167,7 @@ def normalize_for_siglip2(text: str) -> str:
 
 - **Pass:** `top-1 ≥ 75%` - **PASS (78.48%)**
 - **Parity:** `top-1 ∈ [76.7%, 78.7%]` - **PASS** (точно в окне)
-- **Гэп от paper:** −0.62 п.п. - объясняется resolution-delta (≈ −1 п.п.) + статистикой N=5000
+- **Гэп от paper:** -0.62 п.п. - объясняется resolution-delta (≈ -1 п.п.) + статистикой N=5000
 
 Sanity-проверка на ImageNet zero-shot **пройдена**. Наш ONNX pipeline воспроизводит paper-уровень качества при условии правильной токенизации текста.
 

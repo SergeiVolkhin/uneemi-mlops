@@ -1,6 +1,6 @@
 """Препроцессинг изображений под SigLIP 2 vision-энкодер.
 
-Схема: RGB → resize bilinear до IMAGE_SIZE×IMAGE_SIZE → /255 → (x − 0.5) / 0.5 → CHW.
+Схема: RGB → resize bilinear до IMAGE_SIZE×IMAGE_SIZE → /255 → (x - 0.5) / 0.5 → CHW.
 Параметры (mean=0.5, std=0.5, resample=BILINEAR) совпадают с официальным
 `SiglipImageProcessor` (конфиг google/siglip2-base-patch16-224: resample=2 → BILINEAR);
 parity проверяется в `tests/test_smoke.py::test_preprocess_matches_hf_processor`.

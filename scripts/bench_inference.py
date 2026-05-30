@@ -298,7 +298,7 @@ def format_markdown(
     ram_bs32 = encode_batches[32]["ram_peak_mb"]
 
     def _check(ok: bool) -> str:
-        return "[x]" if ok else "[❌]"
+        return "[x]" if ok else "[FAIL]"
 
     targets_lines = [
         f"- {_check(p99_single <= TARGET_P99_SINGLE_MS)} p99 encode(single) ≤ "

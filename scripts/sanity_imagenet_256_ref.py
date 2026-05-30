@@ -1,7 +1,7 @@
 """Reference experiment: SigLIP 2 B/16@256 zero-shot для resolution-gap hypothesis.
 
 Этап 3.5 Шага 2. Цель: проверить, насколько разница resolution (paper @256 vs наш
-ONNX-экспорт @224) объясняет gap −9 п.п. между нашим pipeline (top-1 70.02%) и paper
+ONNX-экспорт @224) объясняет gap -9 п.п. между нашим pipeline (top-1 70.02%) и paper
 (79.1%).
 
 Один-off reference: НЕ экспортируем @256 в ONNX (не засоряем models/), используем
@@ -174,7 +174,7 @@ def append_section(
             "на пределе разрешения. Paper-числа @256 воспроизводятся при подключении @256-весов."
         )
     elif top1 >= 0.72:
-        residual = (0.78 - top1) * 100  # 78% - paper minus −1 за нашу @224-extrapolation
+        residual = (0.78 - top1) * 100  # 78% - paper minus -1 за нашу @224-extrapolation
         conclusion = (
             f"**Вывод:** resolution **частично** объясняет gap "
             f"(+{delta_224:.2f} п.п. от @224 = {top1 * 100:.2f}% @256, paper 79.1%). "
@@ -200,13 +200,13 @@ def append_section(
             "",
             "| Resolution | Backend | top-1 | top-5 | Δ от paper 79.1% |",
             "|---|---|---|---|---|",
-            "| @224 | наш ONNX (PyTorch parity 7.6e-06) | 70.02% | 86.32% | −9.08 |",
+            "| @224 | наш ONNX (PyTorch parity 7.6e-06) | 70.02% | 86.32% | -9.08 |",
             (
                 f"| @256 | HF PyTorch reference | "
                 f"{top1 * 100:.2f}% | {top5 * 100:.2f}% | {delta_paper:+.2f} |"
             ),
             "",
-            f"**Δ resolution effect (@256 − @224):** {delta_224:+.2f} п.п.",
+            f"**Δ resolution effect (@256 - @224):** {delta_224:+.2f} п.п.",
             "",
             conclusion,
         ]
@@ -275,7 +275,7 @@ def main() -> int:
     print(f"  Время прогона: {total_time:.0f}s")
     print()
     print("  Сравнение с @224 (наш ONNX): 70.02% top-1")
-    print(f"  Δ resolution effect (@256 − @224): {(top1 - 0.7002) * 100:+.2f} п.п.")
+    print(f"  Δ resolution effect (@256 - @224): {(top1 - 0.7002) * 100:+.2f} п.п.")
     print(f"  Δ от paper 79.1%: {(top1 - 0.791) * 100:+.2f} п.п.")
     print("=" * 70)
 

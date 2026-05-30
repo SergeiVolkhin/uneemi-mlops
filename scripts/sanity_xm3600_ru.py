@@ -327,7 +327,7 @@ def evaluate_targets(avg_r1: float, n_images: int) -> dict:
 
 def _format_section(metrics: dict, targets: dict, commit: str, n_images: int) -> str:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    cata_str = "FAIL ⚠️" if targets["catastrophic_avg_r1"] else "PASS"
+    cata_str = "FAIL" if targets["catastrophic_avg_r1"] else "PASS"
 
     return "\n".join(
         [
@@ -442,7 +442,7 @@ def main() -> int:
     print()
     print(
         f"  Catastrophic guard (любой R@1 ≥ {CATASTROPHIC_THRESHOLD * 100:.0f}%): "
-        f"{'FAIL ⚠️' if catastrophic else 'PASS'}"
+        f"{'FAIL' if catastrophic else 'PASS'}"
     )
     print(f"  Pass gate (avg R@1 ≥ {PASS_THRESHOLD * 100:.0f}%): {targets['pass_status']}")
     print("  Parity: intentionally omitted (no RU reference in paper)")
@@ -456,7 +456,7 @@ def main() -> int:
 
     if catastrophic:
         print(
-            "\n⚠️  CATASTROPHIC FAILURE: R@1 ниже 15%. НЕ запускайте полный прогон. "
+            "\n  CATASTROPHIC FAILURE: R@1 ниже 15%. НЕ запускайте полный прогон. "
             "Вероятные причины: не тот язык captions (фильтрация по 'ru'), не та "
             "модальность text embeddings, перепутаны i2t/t2i направления.",
             file=sys.stderr,

@@ -25,7 +25,7 @@
   L2-norm, prompt-шаблоны, выбор text-encoder API).
 - **Pass gate** (только при subset_size ≥ 5000): top-1 ≥ 75%.
 - **Parity** (желаемое): top-1 ∈ [76.7, 78.7] (paper 79.1% @ B/16@256,
-  у нас B/16@224 → возможно −1 п.п.).
+  у нас B/16@224 → возможно -1 п.п.).
 """
 
 from __future__ import annotations
@@ -489,7 +489,7 @@ def _format_section(
 ) -> str:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     parity_str = "PASS" if targets["parity"] else "FAIL"
-    catastrophic_marker = " ⚠️ CATASTROPHIC" if targets["catastrophic"] else ""
+    catastrophic_marker = " CATASTROPHIC" if targets["catastrophic"] else ""
     subset_kind = "stratified" if subset_size >= N_CLASSES else "random"
     time_line = f"{results['total_time_s']:.0f}s ({results['time_per_image_ms']:.1f} мс/img)"
     parity_line = (
@@ -618,7 +618,7 @@ def main() -> int:
     print()
     print(
         f"  Catastrophic guard (≥ {CATASTROPHIC_THRESHOLD * 100:.0f}%): "
-        f"{'PASS' if not targets['catastrophic'] else 'FAIL ⚠️'}"
+        f"{'PASS' if not targets['catastrophic'] else 'FAIL'}"
     )
     print(f"  Pass gate (≥ {PASS_THRESHOLD * 100:.0f}%): {targets['pass_status']}")
     print(
@@ -637,7 +637,7 @@ def main() -> int:
 
     if targets["catastrophic"]:
         print(
-            "\n⚠️  CATASTROPHIC FAILURE: top-1 ниже 50%. "
+            "\n  CATASTROPHIC FAILURE: top-1 ниже 50%. "
             "НЕ запускайте полный прогон. "
             "Вероятные причины: неправильный mapping classnames, не та нормализация "
             "эмбеддингов, отсутствует L2-norm перед cosine, перепутаны промпт-шаблоны, "

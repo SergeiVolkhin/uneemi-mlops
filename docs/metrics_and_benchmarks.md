@@ -119,7 +119,7 @@
 | **MRR@50** | `mean(1 / rank_of_first_relevant)` | Скорость нахождения первого релевантного | ≥ 0.25 |
 | **NDCG@50** | с нормализованной релевантностью | При наличии градуированной релевантности (human_score 1-5) | ≥ 0.45 |
 | **Coverage@1000** | `\|распределение top-1 по пользователям\| / N` | Защита от «универсального любимчика» - одного профиля, попадающего в топ всем | ≥ 0.30 |
-| **Intra-list diversity** | `1 − mean(cos(p_i, p_j))` в выдаче из 50 | Разнообразие рекомендаций - важно для exploration | ≥ 0.40 |
+| **Intra-list diversity** | `1 - mean(cos(p_i, p_j))` в выдаче из 50 | Разнообразие рекомендаций - важно для exploration | ≥ 0.40 |
 
 **Определение «релевантного»** на pre-launch этапе:
 - Для 2.2 (aesthetic cluster): релевантны профили из того же стилистического кластера.
@@ -227,7 +227,7 @@
 | Pre-launch | Human-agreement ρ | Profile match | ≥ 0.50 | < 0.30 |
 | Pre-launch | HNSW recall@50 | Infrastructure | ≥ 0.95 | < 0.92 |
 | Live | m2c_rate (primary) | Business | ≥ 0.25 | lift < +40% vs tags |
-| Live | D7 retention | Business | ≥ 0.25 | падение > −10% |
+| Live | D7 retention | Business | ≥ 0.25 | падение > -10% |
 | Live | Report rate | Guardrail | baseline | +20% → откат |
 | Live | p99 match latency | Infrastructure | ≤ 200 мс | > 500 мс |
 
