@@ -45,6 +45,9 @@ POLL_INTERVAL_SEC = int(os.environ.get("POLL_INTERVAL_SEC", "15"))
 GUARDRAIL_P99_MS = float(os.environ.get("GUARDRAIL_P99_MS", "500"))
 GUARDRAIL_ERROR_RATE = float(os.environ.get("GUARDRAIL_ERROR_RATE", "0.005"))
 GUARDRAIL_WINDOW = int(os.environ.get("GUARDRAIL_WINDOW", "200"))
+# Демо-хуки (инъекция неисправности) по умолчанию ВЫКЛЮЧЕНЫ. Включаются только для
+# показа guardrail-отката флагом ENABLE_DEMO_HOOKS=true в .env - в проде их нет.
+DEMO_HOOKS_ENABLED = os.environ.get("ENABLE_DEMO_HOOKS", "false").lower() in ("1", "true", "yes")
 
 # --- Метрики Prometheus -----------------------------------------------------
 PREDICT_LATENCY = Histogram(
@@ -309,7 +312,11 @@ def inject_latency(ms: float = 600.0, count: int = 300) -> dict:
     """Демо-хук: заставить следующие count запросов /predict спать ms миллисекунд.
 
     Нужен только чтобы воспроизводимо показать срабатывание guardrails и откат.
+    Доступен лишь при ENABLE_DEMO_HOOKS=true; в проде эндпоинт отвечает 403 -
+    это не точка управления трафиком, а тестовый рубильник.
     """
+    if not DEMO_HOOKS_ENABLED:
+        raise HTTPException(403, "Демо-хуки выключены (ENABLE_DEMO_HOOKS != true)")
     _FAULT["latency_ms"] = ms
     _FAULT["count"] = count
     _LOGGER.warning("Инъекция задержки %.0fмс на %d запросов (демо guardrails)", ms, count)

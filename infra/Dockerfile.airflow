@@ -1,0 +1,16 @@
+# Образ Airflow с ML-стеком (C3/C5). Контекст сборки - корень репозитория.
+# Ставим feast/mlflow/sklearn/evidently/onnxruntime поверх официального Airflow.
+FROM apache/airflow:2.10.4-python3.11
+
+# Доп. зависимости ставим от пользователя airflow (требование официального образа).
+COPY infra/requirements-airflow.txt /requirements-airflow.txt
+RUN pip install --no-cache-dir -r /requirements-airflow.txt
+
+# Ядро признаков и шаги пайплайнов - в образ; dags и feature_repo монтируются томами.
+# PROJECT_ROOT в config.py = parents[2] от файла, т.е. /opt/uneemi - туда же
+# монтируются models/ и data/ (ONNX и банк картинок).
+COPY src/uneemi_ml /opt/uneemi/src/uneemi_ml
+COPY training /opt/uneemi/training
+COPY monitoring /opt/uneemi/monitoring
+
+ENV PYTHONPATH=/opt/uneemi/src:/opt/uneemi

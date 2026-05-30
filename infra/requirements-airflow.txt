@@ -1,0 +1,14 @@
+# Доп. зависимости для образа Airflow поверх apache/airflow:2.10.4-python3.11.
+# numpy<2 - общий знаменатель feast/sklearn/mlflow/evidently; onnxruntime - для
+# РЕАЛЬНОГО SigLIP в feature_pipeline (torch не нужен, только инференс).
+numpy==1.26.4
+pandas==2.2.3
+pyarrow==17.0.0
+scikit-learn==1.5.2
+mlflow==2.22.1
+feast[redis]==0.40.1
+evidently==0.4.40
+onnxruntime==1.20.1
+pillow==11.1.0
+prometheus-client==0.21.1
+boto3==1.35.99
