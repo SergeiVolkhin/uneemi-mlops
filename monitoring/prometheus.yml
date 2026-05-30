@@ -1,0 +1,21 @@
+# Конфигурация Prometheus (C9). Скрейпим сервинг (его /metrics) и Pushgateway
+# (туда мониторинг-DAG пушит дрифт и live-метрики - задачи Airflow эфемерны).
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: serving
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["serving:8000"]
+
+  - job_name: pushgateway
+    # honor_labels - чтобы job/instance из пушей не перезатирались Prometheus.
+    honor_labels: true
+    static_configs:
+      - targets: ["pushgateway:9091"]
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
