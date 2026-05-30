@@ -30,9 +30,15 @@ def feature_frame(profiles: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_drift(
-    reference: pd.DataFrame, current: pd.DataFrame, psi_threshold: float = 0.2
+    reference: pd.DataFrame, current: pd.DataFrame, psi_threshold: float = 0.25
 ) -> dict:
-    """Посчитать DataDrift (PSI) по числовым признакам. Сохраняет HTML-отчёт."""
+    """Посчитать DataDrift (PSI) по числовым признакам. Сохраняет HTML-отчёт.
+
+    psi_threshold=0.25 - единый порог пер-фичевого PSI: совпадает с гейтом
+    value-skew при валидации признаков (training/validate.py) и с порогом в
+    docs/sli_slo.md, чтобы один и тот же признак считался задрейфившим одинаково
+    и в фиче-пайплайне, и в мониторинге.
+    """
     from evidently import ColumnMapping
     from evidently.metric_preset import DataDriftPreset
     from evidently.report import Report
