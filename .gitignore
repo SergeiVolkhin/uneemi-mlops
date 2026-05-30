@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+wheels/
+.pytest_cache/
+.ruff_cache/
+
+# Virtualenv / uv
+.venv/
+.python-version.local
+
+# ML artifacts
+*.onnx
+models/
+data/
+
+# HuggingFace cache (если кешируется в корне)
+.cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Секреты и локальная конфигурация (12-factor): .env не коммитим, только .env.example
+.env
+infra/.env
+*.env.local
+
+# Feast: сгенерированный реестр и offline-паркеты
+feature_repo/data/
+feature_repo/.ipynb_checkpoints/
+
+# MLflow локальные ранчи (если backend файловый), Evidently отчёты
+mlruns/
+mlartifacts/
+monitoring/reports/
+
+# Демо-данные пайплайна (картинки банка, сгенерированные пары)
+data/images/
+data/pairs/
+
+# Terraform состояние и приватные tfvars
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfvars
+!infra/terraform/*.tfvars.example
+.terraform.lock.hcl

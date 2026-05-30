@@ -1,0 +1,13 @@
+# Нормализация переносов строк. Критично: смонтированные в Linux-контейнеры
+# скрипты/конфиги при checkout на Windows не должны получать CRLF (иначе
+# "bad interpreter: /bin/bash^M" и битые .sql/.env). Принудительно LF.
+* text=auto eol=lf
+
+# Бинарные артефакты не трогаем.
+*.onnx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.parquet binary
+*.db binary
