@@ -12,8 +12,8 @@ jobs:
     name: Линт (ruff)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
       - name: Установить зависимости
         run: uv sync --frozen || uv sync
       - name: ruff check
@@ -22,9 +22,14 @@ jobs:
   test:
     name: Тесты (pytest)
     runs-on: ubuntu-latest
+    # Юнит-тесты не ходят в сеть: HF-обращения отключены, прогон детерминирован.
+    # Тесты, которым нужен процессор/модель с HF, аккуратно skip-аются.
+    env:
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
       - name: Установить зависимости
         run: uv sync --frozen || uv sync
       - name: Доп. зависимости для тестов тренировочного ядра
@@ -37,7 +42,7 @@ jobs:
     name: Сборка docker-образов
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Подготовить .env
         run: cp infra/.env.example infra/.env
       - name: Сборка образов стека (валидация Dockerfile-ов)

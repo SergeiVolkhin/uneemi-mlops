@@ -28,6 +28,9 @@ select = ["E", "F", "I", "B", "UP", "SIM"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Корень репозитория в sys.path: пакеты training/serving/scripts лежат в корне и
+# импортируются тестами. uv run pytest (console-script) не добавляет CWD сам.
+pythonpath = ["."]
 addopts = "-ra"
 
 [dependency-groups]

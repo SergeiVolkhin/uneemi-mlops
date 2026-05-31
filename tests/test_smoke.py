@@ -73,7 +73,15 @@ def test_preprocess_matches_hf_processor(real_image: Image.Image) -> None:
     """Наш preprocess_image бит-в-бит совпадает с официальным SiglipImageProcessor."""
     custom = preprocess_image(real_image)
 
-    processor = AutoProcessor.from_pretrained(MODEL_ID)
+    # Эталонный процессор тянется с HF Hub. В офлайн-CI без кэша - skip (как и
+    # остальные ресурсо-зависимые тесты здесь): сверка идёт там, где модель закэширована.
+    try:
+        processor = AutoProcessor.from_pretrained(MODEL_ID)
+    except Exception as exc:  # noqa: BLE001
+        pytest.skip(
+            f"Процессор {MODEL_ID} недоступен офлайн ({exc.__class__.__name__}); "
+            "сверка препроцессинга требует локального кэша модели"
+        )
     official = processor(images=real_image, return_tensors="np")["pixel_values"]
 
     assert custom.shape == official.shape, (
