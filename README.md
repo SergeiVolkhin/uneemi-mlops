@@ -186,21 +186,30 @@ curl -X POST "http://localhost:18000/admin/inject_latency?ms=700&count=400"
 
 ## Скриншоты
 
-Скриншоты лежат в [`docs/screenshots/`](docs/screenshots/). Что показано (критерий 3):
+Доказательства работы стека (критерий 3).
 
-- `docker compose ps` - все сервисы STATUS Up (healthy).
-- `GET /health` -> 200 с `model_version`.
-- MLflow Model Registry: версия в Production, прежняя в Archived, алиас champion.
-- Airflow: успешные прогоны трёх DAG.
-- Grafana: дашборд на три уровня SLI (latency, drift, AUC, версия модели).
+`docker ps` - все сервисы Up (healthy):
 
-<!-- После добавления файлов раскомментировать:
 ![docker ps healthy](docs/screenshots/docker-ps.png)
-![/health 200](docs/screenshots/health.png)
-![MLflow registry](docs/screenshots/mlflow-registry.png)
+
+`GET /health` -> 200 с номером Production-версии:
+
+![health 200](docs/screenshots/health.png)
+
+MLflow Model Registry - champion/challenger, стадии и вывод из эксплуатации
+(v6 в Production, v3 в Archived):
+
+![MLflow Registry](docs/screenshots/mlflow-registry.png)
+![MLflow Production v6](docs/screenshots/mlflow-production.png)
+![MLflow Archived v3](docs/screenshots/mlflow-archived.png)
+
+Airflow - три DAG с успешными прогонами (оркестратор, уровень 2):
+
 ![Airflow DAGs](docs/screenshots/airflow-dags.png)
+
+Grafana - дашборд SLI на трёх уровнях (технический, модельный, бизнес):
+
 ![Grafana](docs/screenshots/grafana.png)
--->
 
 ## Smoke / e2e / teardown
 
