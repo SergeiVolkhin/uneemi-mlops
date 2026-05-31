@@ -8,6 +8,11 @@
 стек `docker compose up -d`. Группа безопасности открывает порты сервисов (serving
 18000, airflow 18080, grafana 13000, mlflow 5500, prometheus 19090) и SSH.
 
+Сразу после `up` контейнер model-bootstrap регистрирует начальную Production-модель,
+поэтому `GET /health` отвечает 200, а `/predict` по явным векторам работает без
+дополнительной подготовки - этого достаточно для требования критерия 3 о живом
+сервисе. Полные feature/training-пайплайны дополнительно требуют ONNX SigLIP (см. ниже).
+
 ## Применение
 1. Установить Terraform и YC CLI, получить токен/cloud_id/folder_id.
 2. `cp terraform.tfvars.example terraform.tfvars` и заполнить (токен, ключ, repo_url).

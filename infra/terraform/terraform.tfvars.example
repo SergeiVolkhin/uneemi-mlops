@@ -11,7 +11,7 @@ vm_memory_gb   = 8
 vm_disk_gb     = 40
 
 ssh_public_key = "ssh-ed25519 AAAA... user@host"
-repo_url       = "https://github.com/<owner>/<repo>.git"
+repo_url       = "https://github.com/SergeiVolkhin/uneemi-mlops.git"
 repo_ref       = "main"
 
 # ОБЯЗАТЕЛЬНО задать (дефолта нет, fail-safe). Сузить до своего IP/CIDR, например:

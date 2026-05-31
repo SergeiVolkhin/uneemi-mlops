@@ -30,6 +30,15 @@ data/
 .env
 infra/.env
 *.env.local
+# Облачные ключи и приватные креды - НИКОГДА не попадают в репозиторий
+key.json
+sa-key.json
+credentials.json
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+*.p12
 
 # Feast: сгенерированный реестр и offline-паркеты
 feature_repo/data/
@@ -55,3 +64,12 @@ infra/terraform/*.tfstate.*
 infra/terraform/*.tfvars
 !infra/terraform/*.tfvars.example
 .terraform.lock.hcl
+# Глобально (terraform в любом каталоге) - подстраховка для публичного репозитория
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# Внутренний отчёт-ревью со шпаргалкой к защите - локальный деливерабл, не публикуем
+/REVIEW.md
